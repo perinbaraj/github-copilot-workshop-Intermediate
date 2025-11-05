@@ -1,0 +1,26 @@
+[
+  {
+    "id": "CUST12345",
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "status": "active",
+    "joinDate": "2023-01-15",
+    "loyaltyTier": "gold"
+  },
+  {
+    "id": "CUST67890",
+    "name": "Jane Smith", 
+    "email": "jane.smith@example.com",
+    "status": "active",
+    "joinDate": "2023-03-22",
+    "loyaltyTier": "silver"
+  },
+  {
+    "id": "CUST11111",
+    "name": "Bob Johnson",
+    "email": "bob.johnson@example.com", 
+    "status": "inactive",
+    "joinDate": "2022-12-01",
+    "loyaltyTier": "bronze"
+  }
+]

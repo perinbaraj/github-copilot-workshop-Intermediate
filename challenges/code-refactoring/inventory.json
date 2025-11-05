@@ -1,0 +1,39 @@
+{
+  "products": [
+    {
+      "id": "PROD001",
+      "name": "Wireless Headphones",
+      "price": 29.99,
+      "stock": 50,
+      "category": "electronics"
+    },
+    {
+      "id": "PROD002", 
+      "name": "Bluetooth Speaker",
+      "price": 89.99,
+      "stock": 25,
+      "category": "electronics"
+    },
+    {
+      "id": "PROD003",
+      "name": "Phone Case",
+      "price": 19.99,
+      "stock": 100,
+      "category": "accessories"
+    },
+    {
+      "id": "PROD004",
+      "name": "USB Cable",
+      "price": 12.99,
+      "stock": 75,
+      "category": "accessories"
+    },
+    {
+      "id": "PROD005",
+      "name": "Laptop Stand",
+      "price": 45.99,
+      "stock": 30,
+      "category": "office"
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+name: Unit Test Coverage Challenge Validation
+
+on:
+  push:
+    branches: [ main, challenge-* ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-coverage:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run linting
+      run: npm run lint
+
+    - name: Run tests with coverage
+      run: npm run test:coverage
+
+    - name: Check coverage thresholds
+      run: |
+        # Extract coverage percentages from Jest output
+        COVERAGE_OUTPUT=$(npm run test:coverage 2>&1)
+        echo "$COVERAGE_OUTPUT"
+        
+        # Check if coverage meets 80% threshold
+        if echo "$COVERAGE_OUTPUT" | grep -q "All files.*80"; then
+          echo "✅ Coverage threshold met!"
+          echo "COVERAGE_PASSED=true" >> $GITHUB_ENV
+        else
+          echo "❌ Coverage threshold not met. Need 80%+ coverage."
+          echo "COVERAGE_PASSED=false" >> $GITHUB_ENV
+          exit 1
+        fi
+
+    - name: Validate test quality
+      run: |
+        # Check for meaningful test descriptions
+        TEST_FILES=$(find tests -name "*.test.js")
+        
+        # Count total tests
+        TOTAL_TESTS=$(grep -r "test\|it(" $TEST_FILES | wc -l)
+        
+        # Count tests with TODO comments (these need to be implemented)
+        TODO_TESTS=$(grep -r "TODO.*test" $TEST_FILES | wc -l)
+        
+        echo "Total tests found: $TOTAL_TESTS"
+        echo "TODO tests remaining: $TODO_TESTS"
+        
+        # Fail if too many TODO tests remain
+        if [ $TODO_TESTS -gt 5 ]; then
+          echo "❌ Too many TODO tests remaining. Please implement more tests."
+          exit 1
+        fi
+        
+        # Check for meaningful test descriptions
+        BAD_DESCRIPTIONS=$(grep -r "test('should work'" $TEST_FILES | wc -l)
+        if [ $BAD_DESCRIPTIONS -gt 0 ]; then
+          echo "❌ Found tests with generic descriptions. Please use descriptive test names."
+          exit 1
+        fi
+        
+        echo "✅ Test quality validation passed!"
+
+    - name: Check for no source code modifications
+      run: |
+        # Ensure only test files were modified (not source code)
+        MODIFIED_SRC=$(git diff --name-only HEAD~1 2>/dev/null | grep "^src/" | wc -l)
+        
+        if [ $MODIFIED_SRC -gt 0 ]; then
+          echo "❌ Source code files were modified. This challenge should only modify test files."
+          git diff --name-only HEAD~1 | grep "^src/" || true
+          exit 1
+        fi
+        
+        echo "✅ No source code modifications detected!"
+
+    - name: Generate coverage badge
+      if: success()
+      run: |
+        # Extract coverage percentage for badge
+        COVERAGE_PERCENT=$(npm run test:coverage 2>&1 | grep -o '[0-9]\+\.[0-9]\+%' | head -1 | sed 's/%//')
+        
+        if [ ! -z "$COVERAGE_PERCENT" ]; then
+          echo "Coverage: $COVERAGE_PERCENT%"
+          
+          # Create coverage badge URL
+          BADGE_COLOR="red"
+          if (( $(echo "$COVERAGE_PERCENT >= 80" | bc -l) )); then
+            BADGE_COLOR="brightgreen"
+          elif (( $(echo "$COVERAGE_PERCENT >= 60" | bc -l) )); then
+            BADGE_COLOR="yellow"
+          fi
+          
+          echo "COVERAGE_BADGE=https://img.shields.io/badge/coverage-$COVERAGE_PERCENT%25-$BADGE_COLOR" >> $GITHUB_ENV
+        fi
+
+    - name: Upload coverage reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: coverage/
+
+    - name: Comment PR with results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          
+          // Read coverage summary if it exists
+          let coverageData = '';
+          try {
+            const coverageSummary = fs.readFileSync('coverage/coverage-summary.json', 'utf8');
+            const summary = JSON.parse(coverageSummary);
+            const total = summary.total;
+            
+            coverageData = `
+          ## 📊 Coverage Results
+          
+          | Metric | Percentage |
+          |--------|------------|
+          | Lines | ${total.lines.pct}% |
+          | Statements | ${total.statements.pct}% |
+          | Functions | ${total.functions.pct}% |
+          | Branches | ${total.branches.pct}% |
+          
+          **Overall Coverage: ${total.lines.pct}%**
+          `;
+          } catch (e) {
+            coverageData = 'Coverage data not available.';
+          }
+          
+          const success = process.env.COVERAGE_PASSED === 'true';
+          const status = success ? '✅ **Challenge Completed!**' : '❌ **Needs Improvement**';
+          
+          const body = `
+          # 🧪 Unit Test Coverage Challenge Results
+          
+          ${status}
+          
+          ${coverageData}
+          
+          ${success ? 
+            '🎉 Congratulations! You\'ve successfully achieved 80%+ test coverage with meaningful tests!' :
+            '📝 Keep going! You need to reach 80% coverage with meaningful tests to complete this challenge.'
+          }
+          
+          ## Next Steps
+          ${success ? 
+            '- Your solution will be reviewed and merged\n- Check out the next challenge in your learning path\n- Share your success in Discussions!' :
+            '- Review the coverage report to identify uncovered code\n- Add tests for edge cases and error conditions\n- Ensure test descriptions are clear and meaningful'
+          }
+          `;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: body
+          });
+
+    - name: Set status check
+      if: always()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const success = process.env.COVERAGE_PASSED === 'true';
+          
+          github.rest.repos.createCommitStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            sha: context.sha,
+            state: success ? 'success' : 'failure',
+            target_url: `${context.payload.repository.html_url}/actions/runs/${context.runId}`,
+            description: success ? 'Coverage threshold met!' : 'Coverage below 80%',
+            context: 'Unit Test Coverage Challenge'
+          });

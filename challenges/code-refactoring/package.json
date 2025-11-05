@@ -1,0 +1,48 @@
+{
+  "name": "code-refactoring-challenge",
+  "version": "1.0.0",
+  "description": "GitHub Copilot Code Refactoring Challenge - Transform messy code into clean, maintainable solutions",
+  "main": "src/orderProcessor.js",
+  "scripts": {
+    "start": "node src/demo.js",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix"
+  },
+  "keywords": [
+    "github-copilot",
+    "refactoring",
+    "code-quality",
+    "ai-assisted-development"
+  ],
+  "author": "GitHub Copilot Challenge Framework",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "eslint": "^8.0.0",
+    "@eslint/js": "^9.0.0"
+  },
+  "dependencies": {},
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/demo.js"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
+  }
+}

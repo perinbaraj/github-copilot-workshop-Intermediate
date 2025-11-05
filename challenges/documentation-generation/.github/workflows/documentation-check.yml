@@ -1,0 +1,184 @@
+name: Documentation Coverage Check
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  documentation-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build project
+      run: npm run build
+    
+    - name: Check TypeScript compilation
+      run: npx tsc --noEmit
+    
+    - name: Generate documentation
+      run: npm run docs:generate
+    
+    - name: Check documentation coverage
+      run: |
+        echo "Checking for undocumented functions..."
+        
+        # Count total functions/methods/classes
+        TOTAL_ITEMS=$(find src -name "*.ts" -not -path "*/types/*" -exec grep -h "export \(class\|function\|const.*=.*=>\)" {} \; | wc -l)
+        
+        # Count documented items (those with JSDoc comments)
+        DOCUMENTED_ITEMS=$(find src -name "*.ts" -not -path "*/types/*" -exec grep -B5 "export \(class\|function\|const.*=.*=>\)" {} \; | grep -c "/\*\*")
+        
+        echo "Total exportable items: $TOTAL_ITEMS"
+        echo "Documented items: $DOCUMENTED_ITEMS"
+        
+        # Calculate coverage percentage
+        if [ $TOTAL_ITEMS -gt 0 ]; then
+          COVERAGE=$((DOCUMENTED_ITEMS * 100 / TOTAL_ITEMS))
+          echo "Documentation coverage: $COVERAGE%"
+          
+          # Set minimum coverage threshold (can be adjusted)
+          MIN_COVERAGE=80
+          
+          if [ $COVERAGE -lt $MIN_COVERAGE ]; then
+            echo "❌ Documentation coverage ($COVERAGE%) is below the minimum threshold ($MIN_COVERAGE%)"
+            exit 1
+          else
+            echo "✅ Documentation coverage ($COVERAGE%) meets the minimum threshold ($MIN_COVERAGE%)"
+          fi
+        else
+          echo "No exportable items found to document"
+        fi
+    
+    - name: Check README completeness
+      run: |
+        echo "Checking README.md completeness..."
+        
+        REQUIRED_SECTIONS=(
+          "# "
+          "## Installation"
+          "## Usage"
+          "## API Documentation"
+          "## Development"
+        )
+        
+        MISSING_SECTIONS=()
+        
+        for section in "${REQUIRED_SECTIONS[@]}"; do
+          if ! grep -q "^$section" README.md; then
+            MISSING_SECTIONS+=("$section")
+          fi
+        done
+        
+        if [ ${#MISSING_SECTIONS[@]} -gt 0 ]; then
+          echo "❌ README.md is missing required sections:"
+          printf '  - %s\n' "${MISSING_SECTIONS[@]}"
+          exit 1
+        else
+          echo "✅ README.md contains all required sections"
+        fi
+    
+    - name: Validate API documentation
+      run: |
+        echo "Checking for API documentation..."
+        
+        # Check if controllers have route documentation
+        CONTROLLERS=$(find src/controllers -name "*.ts" -exec basename {} .ts \;)
+        MISSING_API_DOCS=()
+        
+        for controller in $CONTROLLERS; do
+          if [ ! -f "docs/api/${controller}.md" ]; then
+            MISSING_API_DOCS+=("docs/api/${controller}.md")
+          fi
+        done
+        
+        if [ ${#MISSING_API_DOCS[@]} -gt 0 ]; then
+          echo "❌ Missing API documentation files:"
+          printf '  - %s\n' "${MISSING_API_DOCS[@]}"
+          exit 1
+        else
+          echo "✅ All controllers have API documentation"
+        fi
+    
+    - name: Check developer guide
+      run: |
+        echo "Checking developer guide..."
+        
+        REQUIRED_GUIDES=(
+          "docs/DEVELOPER_GUIDE.md"
+          "docs/SETUP.md"
+          "docs/ARCHITECTURE.md"
+        )
+        
+        MISSING_GUIDES=()
+        
+        for guide in "${REQUIRED_GUIDES[@]}"; do
+          if [ ! -f "$guide" ]; then
+            MISSING_GUIDES+=("$guide")
+          fi
+        done
+        
+        if [ ${#MISSING_GUIDES[@]} -gt 0 ]; then
+          echo "❌ Missing developer guide files:"
+          printf '  - %s\n' "${MISSING_GUIDES[@]}"
+          exit 1
+        else
+          echo "✅ All required developer guides are present"
+        fi
+    
+    - name: Run tests
+      run: npm test
+    
+    - name: Generate coverage report
+      run: npm run test:coverage
+    
+    - name: Upload documentation artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: documentation
+        path: |
+          docs/
+          coverage/
+        retention-days: 30
+    
+    - name: Comment PR with results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          
+          // Read documentation coverage results
+          let coverageInfo = 'Documentation coverage results will be displayed here.';
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `## 📚 Documentation Check Results
+            
+            ${coverageInfo}
+            
+            Please ensure all functions, classes, and methods are properly documented with JSDoc comments.
+            
+            ### Required Documentation:
+            - ✅ JSDoc comments for all exported functions/classes
+            - ✅ Complete README.md with all required sections  
+            - ✅ API documentation for all controllers
+            - ✅ Developer guides for setup and architecture
+            
+            View the full documentation report in the workflow artifacts.`
+          });
