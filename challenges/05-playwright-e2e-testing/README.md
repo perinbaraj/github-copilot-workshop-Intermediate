@@ -113,15 +113,6 @@ tests/
 ### Task 1: Page Object Model Setup (10-12 minutes)
 **Goal**: Create reusable Page Object Models for key pages
 
-#### Copilot Prompts to Try:
-```
-"Create a Playwright Page Object Model for the product catalog page with methods for filtering, searching, and selecting products"
-
-"Generate a shopping cart page object with methods to add items, update quantities, and proceed to checkout"
-
-"Build a checkout page object that handles multi-step form navigation and validation"
-```
-
 #### Success Criteria:
 - [ ] Create `pages/ProductCatalogPage.ts` with comprehensive methods
 - [ ] Implement `pages/ShoppingCartPage.ts` with cart operations
@@ -132,15 +123,6 @@ tests/
 
 ### Task 2: User Journey Testing (12-15 minutes)
 **Goal**: Test complete user workflows from start to finish
-
-#### Copilot Prompts to Try:
-```
-"Generate a Playwright test for the complete purchase journey: browse products → add to cart → checkout → order confirmation"
-
-"Create tests for user registration and login flow with validation"
-
-"Write tests for the product search and filtering workflow"
-```
 
 #### Test Scenarios to Cover:
 - [ ] Complete purchase flow (guest user)
@@ -154,15 +136,6 @@ tests/
 ### Task 3: Error Handling & Edge Cases (10-12 minutes)
 **Goal**: Test error scenarios and boundary conditions
 
-#### Copilot Prompts to Try:
-```
-"Generate Playwright tests for checkout form validation errors"
-
-"Create tests for handling out-of-stock products"
-
-"Write tests for invalid payment scenarios"
-```
-
 #### Scenarios to Test:
 - [ ] Form validation (empty fields, invalid formats)
 - [ ] Out-of-stock product handling
@@ -175,15 +148,6 @@ tests/
 ### Task 4: Accessibility Testing (8-10 minutes)
 **Goal**: Ensure application is accessible
 
-#### Copilot Prompts to Try:
-```
-"Generate Playwright tests to check accessibility compliance using axe-core"
-
-"Create tests for keyboard navigation through the checkout flow"
-
-"Write tests to verify ARIA labels and screen reader compatibility"
-```
-
 #### Success Criteria:
 - [ ] Run axe accessibility scans on key pages
 - [ ] Test keyboard navigation
@@ -194,15 +158,6 @@ tests/
 
 ### Task 5: Responsive & Cross-Browser Testing (8-10 minutes)
 **Goal**: Ensure consistent experience across devices and browsers
-
-#### Copilot Prompts to Try:
-```
-"Generate Playwright tests for responsive design on mobile, tablet, and desktop viewports"
-
-"Create tests that verify the mobile menu navigation works correctly"
-
-"Write tests for touch interactions on mobile devices"
-```
 
 #### Success Criteria:
 - [ ] Test on mobile (375px), tablet (768px), desktop (1920px)
@@ -324,12 +279,6 @@ Create `TESTING_REPORT.md` documenting:
 - Performance metrics
 - Known issues & improvements
 
-### 3. Copilot Prompts Library
-Create `COPILOT_PROMPTS.md` with:
-- Effective prompts used
-- Prompting patterns discovered
-- Tips for test generation
-- Lessons learned
 
 ## 🏆 Bonus Challenges
 
