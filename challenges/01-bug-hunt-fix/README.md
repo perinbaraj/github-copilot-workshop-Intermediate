@@ -60,16 +60,6 @@ npm test -- --watch
 ### Step 1: Initial Analysis (10 minutes)
 Use Copilot Chat to analyze the codebase:
 
-**Effective Prompts:**
-```
-"Analyze this TODO application code and identify potential bugs"
-
-"Review the TodoList.js file and point out any logic errors"
-
-"Check this date handling code for timezone or formatting issues"
-
-"Find edge cases that might cause problems in this delete function"
-```
 
 ### Step 2: Reproduce Bugs (10 minutes)
 Run the application and test each feature:
@@ -90,34 +80,10 @@ npm start
 ### Step 3: Use Copilot to Debug (20 minutes)
 
 #### Bug #1: Completed Tasks Disappear
-**Copilot Chat Prompts:**
-```
-"Why would completed tasks disappear from the list in this code?"
-
-"Explain what this filter function does and if it has issues"
-
-"How should I fix the logic to keep completed tasks visible?"
-```
 
 #### Bug #2: Wrong Due Dates
-**Copilot Chat Prompts:**
-```
-"Analyze this date parsing code and check for timezone issues"
-
-"Why might dates display incorrectly in different timezones?"
-
-"Suggest a fix for consistent date handling across timezones"
-```
 
 #### Bug #3: Priority Sorting
-**Copilot Chat Prompts:**
-```
-"Check this sort function - is the comparison logic correct?"
-
-"Why would HIGH priority tasks appear after LOW priority?"
-
-"Fix this sorting to properly order by priority"
-```
 
 #### Continue for all bugs...
 
@@ -149,29 +115,6 @@ I won't tell you exactly where they are, but here are hints:
 5. **Delete Bug** - Array modification during iteration
 6. **ID Generation Bug** - IDs can duplicate under load
 7. **Counter Bug** - Statistics calculation has off-by-one error
-
-## 💡 Copilot Debugging Strategies
-
-### 🔍 Analysis Prompts
-```
-"What are the potential bugs in this function?"
-"Explain this code line by line and identify issues"
-"What edge cases are not handled here?"
-```
-
-### 🛠️ Fix Generation Prompts
-```
-"Fix the bug in this function that causes [specific issue]"
-"Refactor this code to handle [edge case] properly"
-"Add error handling to prevent [specific problem]"
-```
-
-### ✅ Testing Prompts
-```
-"Generate a test case to reproduce this bug"
-"Write a test that verifies this bug is fixed"
-"Create tests for edge cases in this function"
-```
 
 ## ✅ Success Criteria
 
