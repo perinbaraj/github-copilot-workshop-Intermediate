@@ -57,18 +57,6 @@ The inventory management API currently has:
 ### Task 1: JSDoc Documentation Generation (10-12 minutes)
 **Goal**: Add comprehensive JSDoc comments to all functions, classes, and interfaces
 
-#### Copilot Prompting Strategy:
-```typescript
-// Prompt: "Add comprehensive JSDoc documentation for this function including parameters, return type, examples, and error conditions"
-export async function updateInventoryStock(productId: string, quantity: number) {
-    // Complex inventory logic without documentation
-}
-
-// Then use prompts like:
-// "Document all possible error scenarios for this function"
-// "Add usage examples to this JSDoc comment"
-// "Generate parameter descriptions with type information"
-```
 
 #### Success Criteria:
 - [ ] All public functions have complete JSDoc comments
@@ -80,16 +68,6 @@ export async function updateInventoryStock(productId: string, quantity: number) 
 ### Task 2: README Creation (8-10 minutes)
 **Goal**: Generate a comprehensive project README using Copilot assistance
 
-#### Copilot Prompting Strategy:
-```markdown
-<!-- Prompt: "Generate a professional README for this e-commerce inventory API project" -->
-<!-- Follow with specific prompts: -->
-<!-- "Create installation and setup instructions" -->
-<!-- "Generate API overview with endpoint summary" -->
-<!-- "Add usage examples with code snippets" -->
-<!-- "Include authentication and configuration details" -->
-```
-
 #### Success Criteria:
 - [ ] Clear project description and purpose
 - [ ] Complete installation and setup instructions
@@ -100,16 +78,6 @@ export async function updateInventoryStock(productId: string, quantity: number) 
 ### Task 3: API Endpoint Documentation (10-12 minutes)
 **Goal**: Create detailed documentation for all API endpoints
 
-#### Copilot Prompting Strategy:
-```typescript
-// Prompt: "Generate comprehensive API documentation for this endpoint including request/response schemas, examples, and error codes"
-router.post('/api/products', createProduct);
-
-// Follow with:
-// "Create example request and response JSON for this endpoint"
-// "Document all possible HTTP status codes and error responses"
-// "Add authentication requirements and headers needed"
-```
 
 #### Success Criteria:
 - [ ] All endpoints documented with HTTP methods and paths
@@ -121,14 +89,6 @@ router.post('/api/products', createProduct);
 ### Task 4: Developer Guide Creation (8-10 minutes)
 **Goal**: Generate comprehensive developer onboarding and workflow documentation
 
-#### Copilot Prompting Strategy:
-```markdown
-<!-- Prompt: "Generate a developer guide for this project including architecture overview, development workflow, and best practices" -->
-<!-- Then: -->
-<!-- "Create troubleshooting guide for common development issues" -->
-<!-- "Generate code architecture explanation with diagrams" -->
-<!-- "Add development environment setup for new team members" -->
-```
 
 #### Success Criteria:
 - [ ] Getting started guide for new developers
