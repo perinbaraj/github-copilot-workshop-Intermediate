@@ -56,19 +56,6 @@ The current system processes e-commerce orders but has several issues:
 ### Task 1: Function Decomposition (15 minutes)
 **Goal**: Break down the monolithic `processOrder` function
 
-#### Copilot Prompting Strategy:
-```javascript
-// Current messy function - ask Copilot to analyze and break down
-// Prompt: "Analyze this function and suggest how to break it into smaller, focused functions"
-function processOrder(orderData) {
-    // 200+ lines of mixed responsibilities
-}
-
-// Then use prompts like:
-// "Extract validation logic into a separate function"
-// "Create a separate function for price calculations" 
-// "Move payment processing to its own function"
-```
 
 #### Success Criteria:
 - [ ] Extract order validation into `validateOrder()`
@@ -80,24 +67,6 @@ function processOrder(orderData) {
 ### Task 2: Error Handling Enhancement (10 minutes)
 **Goal**: Add comprehensive error handling using Copilot assistance
 
-#### Copilot Prompting Strategy:
-```javascript
-// Prompt examples:
-// "Add comprehensive error handling to this function with specific error types"
-// "Create custom error classes for different failure scenarios"
-// "Implement error handling that doesn't break the entire process"
-
-// Before: Functions that can silently fail
-function validateOrder(order) {
-    // No error handling
-}
-
-// After: Robust error handling
-function validateOrder(order) {
-    // Copilot-generated error handling
-}
-```
-
 #### Success Criteria:
 - [ ] Custom error classes for different scenarios
 - [ ] Proper error propagation without system crashes
@@ -107,15 +76,6 @@ function validateOrder(order) {
 ### Task 3: Design Pattern Implementation (15 minutes)
 **Goal**: Apply design patterns using Copilot's pattern knowledge
 
-#### Copilot Prompting Strategy:
-```javascript
-// Prompt: "Refactor this code to use the Strategy pattern for different payment methods"
-// Prompt: "Implement the Builder pattern for order creation"
-// Prompt: "Use the Observer pattern for order status updates"
-
-// Let Copilot guide you through pattern implementation
-```
-
 #### Success Criteria:
 - [ ] Strategy pattern for payment processing
 - [ ] Builder pattern for complex order construction
@@ -124,14 +84,6 @@ function validateOrder(order) {
 
 ### Task 4: Code Quality Improvements (10 minutes)
 **Goal**: Enhance readability and maintainability
-
-#### Copilot Prompting Strategy:
-```javascript
-// Prompt: "Improve variable and function naming in this code"
-// Prompt: "Add comprehensive JSDoc comments to this module"
-// Prompt: "Refactor this code to follow SOLID principles"
-// Prompt: "Remove code duplication and create reusable utilities"
-```
 
 #### Success Criteria:
 - [ ] Descriptive, consistent naming conventions
@@ -176,22 +128,10 @@ npm start
 ## 🎨 Advanced Copilot Techniques
 
 ### 1. Comparative Analysis
-```javascript
-// Prompt: "Compare these two implementations and suggest the better approach"
-// Show Copilot different refactoring options and get recommendations
-```
 
 ### 2. Performance-Focused Refactoring
-```javascript
-// Prompt: "Optimize this code for performance while maintaining readability"
-// Let Copilot suggest performance improvements
-```
 
 ### 3. Refactoring for Testability
-```javascript
-// Prompt: "Refactor this code to make it more testable with dependency injection"
-// Use Copilot to improve code testability
-```
 
 ## 🔍 Reflection Questions
 
