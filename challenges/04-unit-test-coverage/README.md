@@ -66,58 +66,6 @@ Review the files in `src/` to understand:
 ### 4. Use Copilot to Generate Tests
 Use these Copilot techniques to add comprehensive tests:
 
-#### 💬 Copilot Chat Strategies
-- Ask: "Generate unit tests for the ShoppingCart.addItem method covering edge cases"
-- Request: "Create tests for error conditions in the updateItemQuantity function"
-- Prompt: "Write tests to achieve 100% coverage for the DiscountEngine class"
-
-#### ✨ Inline Completion Techniques
-- Type `// Test: ` followed by your test description and let Copilot complete
-- Start with `test('should` and let Copilot suggest test cases
-- Use comments like `// Edge case:` to guide test generation
-
-#### 🔍 Coverage-Driven Prompting
-- Review coverage report to identify uncovered lines
-- Ask Copilot: "Generate tests for lines 45-52 in ShoppingCart.js"
-- Request specific scenarios: "Test the merge method with duplicate items"
-
-## 🔍 Copilot Prompting Examples
-
-### 💬 Chat Prompts for High-Priority Areas
-
-1. **Edge Cases Generation**
-   ```
-   "Generate comprehensive tests for ShoppingCart edge cases including:
-   - Empty cart operations
-   - Invalid product IDs
-   - Negative quantities and zero prices
-   - Boundary value testing"
-   ```
-
-2. **Error Condition Testing**
-   ```
-   "Create unit tests for error handling in CartItem class:
-   - Invalid constructor parameters
-   - Validation failures
-   - Exception scenarios with clear assertions"
-   ```
-
-3. **Business Logic Coverage**
-   ```
-   "Write tests for PriceCalculator complex scenarios:
-   - Multiple discount combinations
-   - Tax calculations with edge cases
-   - Currency conversion corner cases"
-   ```
-
-4. **Integration Testing**
-   ```
-   "Generate integration tests showing how ShoppingCart works with:
-   - CartItem interactions
-   - PriceCalculator integration
-   - DiscountEngine application"
-   ```
-
 ## 📁 Project Structure
 
 ```
